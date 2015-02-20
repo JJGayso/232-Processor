@@ -1,0 +1,236 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 13.4
+//  \   \         Application : sch2hdl
+//  /   /         Filename : EverythingV2_drc.vf
+// /___/   /\     Timestamp : 02/17/2015 22:12:46
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: C:\Xilinx\13.4\ISE_DS\ISE\bin\nt64\unwrapped\sch2hdl.exe -sympath C:/Users/humphrjm/Documents/Xilinx/232FinalProject/FinalProject/ipcore_dir -intstyle ise -family spartan3e -verilog EverythingV2_drc.vf -w C:/Users/humphrjm/Documents/Xilinx/232FinalProject/FinalProject/EverythingV2.sch
+//Design Name: EverythingV2
+//Device: spartan3e
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module MEMORY_MUSER_EverythingV2(ADDR_IN, 
+                                 CLK, 
+                                 DAT_IN, 
+                                 MemWCTRL, 
+                                 DAT_OUT);
+
+    input [9:0] ADDR_IN;
+    input CLK;
+    input [15:0] DAT_IN;
+    input MemWCTRL;
+   output [15:0] DAT_OUT;
+   
+   wire XLXN_1;
+   
+   block_memory  XLXI_1 (.addra(ADDR_IN[9:0]), 
+                        .clka(XLXN_1), 
+                        .dina(DAT_IN[15:0]), 
+                        .wea(MemWCTRL), 
+                        .douta(DAT_OUT[15:0]));
+   clockDoubler  XLXI_2 (.clkIn(CLK), 
+                        .dClk(XLXN_1));
+endmodule
+`timescale 1ns / 1ps
+
+module EverythingV2(RESET);
+
+    input RESET;
+   
+   wire [15:0] add_OUT;
+   wire [15:0] AiA_OUT;
+   wire [15:0] AiB_OUT;
+   wire [3:0] ALUopCTRL;
+   wire [15:0] ALUout_OUT;
+   wire ALUwrtCTRL;
+   wire [15:0] ALU_OUT;
+   wire AwrtCTRL;
+   wire bneObeqCTRL;
+   wire bneObeq_OUT;
+   wire branchCTRL;
+   wire [15:0] branchisZero_Mux_OUT;
+   wire branchisZero_OUT;
+   wire BwrtCTRL;
+   wire CLK;
+   wire [15:0] ConstOne_OUT;
+   wire [2:0] ConstZero_OUT;
+   wire ImSlctCTRL;
+   wire iorCTRL;
+   wire [15:0] ior_OUT;
+   wire [15:0] IRPC_OUT;
+   wire IRwrtCTRL;
+   wire [15:0] IR_OUT;
+   wire isZeroInv_OUT;
+   wire isZero_OUT;
+   wire jumpCTRL;
+   wire [15:0] jump_OUT;
+   wire memAdrsSlctCTRL;
+   wire MemOWCTRL;
+   wire [15:0] MemO_OUT;
+   wire memWCTRL;
+   wire [15:0] Mem_Data_OUT;
+   wire [15:0] Mem_Mux_OUT;
+   wire PCwrtCTRL;
+   wire [15:0] PC_OUT;
+   wire [15:0] RegFile1_OUT;
+   wire [15:0] RegFile2_OUT;
+   wire RegWrtCTRL;
+   wire [15:0] Reg0_OUT;
+   wire [15:0] SEImm_OUT;
+   wire useFirstRegCTRL;
+   wire [2:0] useFirstReg_OUT;
+   wire useRegCTRL;
+   wire [2:0] useReg_OUT;
+   wire wAdrsCTRL;
+   wire [2:0] wAdrs_OUT;
+   wire [1:0] wDatCTRL;
+   wire [15:0] wDat_OUT;
+   
+   adder16bit  add (.aIn(branchisZero_Mux_OUT[15:0]), 
+                   .bIn(PC_OUT[15:0]), 
+                   .outPin(add_OUT[15:0]));
+   register16bit  AiA (.clk(CLK), 
+                      .dataIn(RegFile1_OUT[15:0]), 
+                      .reset(RESET), 
+                      .write(AwrtCTRL), 
+                      .dataOut(AiA_OUT[15:0]));
+   register16bit  AiB (.clk(CLK), 
+                      .dataIn(ior_OUT[15:0]), 
+                      .reset(RESET), 
+                      .write(BwrtCTRL), 
+                      .dataOut(AiB_OUT[15:0]));
+   ALU16bit  ALU (.aIn(AiA_OUT[15:0]), 
+                 .aluOp(ALUopCTRL[3:0]), 
+                 .bIn(AiB_OUT[15:0]), 
+                 .reset(RESET), 
+                 .isZero(isZero_OUT), 
+                 .outPut(ALU_OUT[15:0]));
+   register16bit  ALUout (.clk(CLK), 
+                         .dataIn(ALU_OUT[15:0]), 
+                         .reset(RESET), 
+                         .write(ALUwrtCTRL), 
+                         .dataOut(ALUout_OUT[15:0]));
+   MUX_OneBit_1  bneObeq (.ctrlSlct(bneObeqCTRL), 
+                         .in1(isZero_OUT), 
+                         .in2(isZeroInv_OUT), 
+                         .muxOut(bneObeq_OUT));
+   MUX_OneBit  branchisZero (.ctrlSlct(branchisZero_OUT), 
+                            .in1(ConstOne_OUT[15:0]), 
+                            .in2(SEImm_OUT[15:0]), 
+                            .muxOut(branchisZero_Mux_OUT[15:0]));
+   MUX_OneBit  ior (.ctrlSlct(iorCTRL), 
+                   .in1(RegFile2_OUT[15:0]), 
+                   .in2(SEImm_OUT[15:0]), 
+                   .muxOut(ior_OUT[15:0]));
+   register16bit  IR (.clk(CLK), 
+                     .dataIn(Mem_Data_OUT[15:0]), 
+                     .reset(RESET), 
+                     .write(IRwrtCTRL), 
+                     .dataOut(IR_OUT[15:0]));
+   MUX_OneBit  jump (.ctrlSlct(jumpCTRL), 
+                    .in1(add_OUT[15:0]), 
+                    .in2(IRPC_OUT[15:0]), 
+                    .muxOut(jump_OUT[15:0]));
+   MEMORY_MUSER_EverythingV2  Mem (.ADDR_IN(Mem_Mux_OUT[9:0]), 
+                                  .CLK(CLK), 
+                                  .DAT_IN(Reg0_OUT[15:0]), 
+                                  .MemWCTRL(memWCTRL), 
+                                  .DAT_OUT(Mem_Data_OUT[15:0]));
+   MUX_OneBit  memAdrsSlct (.ctrlSlct(memAdrsSlctCTRL), 
+                           .in1(PC_OUT[15:0]), 
+                           .in2(ALUout_OUT[15:0]), 
+                           .muxOut(Mem_Mux_OUT[15:0]));
+   register16bit  MemO (.clk(CLK), 
+                       .dataIn(Mem_Data_OUT[15:0]), 
+                       .reset(RESET), 
+                       .write(MemOWCTRL), 
+                       .dataOut(MemO_OUT[15:0]));
+   register16bit  PC (.clk(CLK), 
+                     .dataIn(jump_OUT[15:0]), 
+                     .reset(RESET), 
+                     .write(PCwrtCTRL), 
+                     .dataOut(PC_OUT[15:0]));
+   regFile16bit8reg  RegFile (.clk(CLK), 
+                             .regWrt(RegWrtCTRL), 
+                             .reset(RESET), 
+                             .r1(useReg_OUT[2:0]), 
+                             .r2(useFirstReg_OUT[2:0]), 
+                             .wDat(wDat_OUT[15:0]), 
+                             .wDest(wAdrs_OUT[2:0]), 
+                             .m(Reg0_OUT[15:0]), 
+                             .r1out(RegFile1_OUT[15:0]), 
+                             .r2out(RegFile2_OUT[15:0]));
+   SignExtend  SignExt (.CLK(CLK), 
+                       .imSlct(ImSlctCTRL), 
+                       .in1(IR_OUT[11:0]), 
+                       .in2(IR_OUT[9:0]), 
+                       .reset(RESET), 
+                       .outExtend(SEImm_OUT[15:0]));
+   MUX_OneBit_3  useFirstReg (.ctrlSlct(useFirstRegCTRL), 
+                             .in1(IR_OUT[11:9]), 
+                             .in2(IR_OUT[8:6]), 
+                             .muxOut(useFirstReg_OUT[2:0]));
+   MUX_OneBit_3  useReg (.ctrlSlct(useRegCTRL), 
+                        .in1(ConstZero_OUT[2:0]), 
+                        .in2(IR_OUT[11:9]), 
+                        .muxOut(useReg_OUT[2:0]));
+   MUX_OneBit_3  wAdrs (.ctrlSlct(wAdrsCTRL), 
+                       .in1(ConstZero_OUT[2:0]), 
+                       .in2(IR_OUT[8:6]), 
+                       .muxOut(wAdrs_OUT[2:0]));
+   MUX_TwoBit  wDat (.ctrlSlct(wDatCTRL[1:0]), 
+                    .in1(MemO_OUT[15:0]), 
+                    .in2(ALUout_OUT[15:0]), 
+                    .in3(AiA_OUT[15:0]), 
+                    .in4(SEImm_OUT[15:0]), 
+                    .muxOut(wDat_OUT[15:0]));
+   PCadderConstant  XLXI_18 (.constantOne(ConstOne_OUT[15:0]));
+   ZeroAdder3Bit  XLXI_19 (.constantZero(ConstZero_OUT[2:0]));
+   ALUcontrol  XLXI_22 (.func(IR_OUT[5:2]), 
+                       .op(IR_OUT[15:12]), 
+                       .reset(RESET), 
+                       .ALUop(ALUopCTRL[3:0]));
+   MainControl  XLXI_23 (.CLK(CLK), 
+                        .func(IR_OUT[5:2]), 
+                        .op(IR_OUT[15:12]), 
+                        .reset(RESET), 
+                        .ALUwrt(ALUwrtCTRL), 
+                        .Awrt(AwrtCTRL), 
+                        .BNEoBEQ(bneObeqCTRL), 
+                        .branch(branchCTRL), 
+                        .Bwrt(BwrtCTRL), 
+                        .immSlct(ImSlctCTRL), 
+                        .imOrR(iorCTRL), 
+                        .IRwrt(IRwrtCTRL), 
+                        .jump(jumpCTRL), 
+                        .memAdrsSlct(memAdrsSlctCTRL), 
+                        .memOWrt(MemOWCTRL), 
+                        .memWrt(memWCTRL), 
+                        .PCwrt(PCwrtCTRL), 
+                        .regWrt(RegWrtCTRL), 
+                        .useFirstReg(useFirstRegCTRL), 
+                        .useReg(useRegCTRL), 
+                        .wAdrs(wAdrsCTRL), 
+                        .wDat(wDatCTRL[1:0]));
+   CombineIRwPCJUMP  XLXI_24 (.irIN(IR_OUT[15:0]), 
+                             .pcIN(PC_OUT[15:0]), 
+                             .jumpAddrOUT(IRPC_OUT[15:0]));
+   INV  XLXI_29 (.I(isZero_OUT), 
+                .O(isZeroInv_OUT));
+   AND2  XLXI_32 (.I0(bneObeq_OUT), 
+                 .I1(branchCTRL), 
+                 .O(branchisZero_OUT));
+   clockModule  XLXI_42 (.reset(RESET), 
+                        .clk(CLK));
+endmodule
